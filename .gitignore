@@ -6,3 +6,5 @@ backend/target/
 *.log
 .idea/
 .vscode/
+
+deploy/firebase-service-account.json

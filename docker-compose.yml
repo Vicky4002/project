@@ -1,0 +1,25 @@
+version: '3.9'
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: turfhub-backend
+    environment:
+      SUPABASE_DB_URL: ${SUPABASE_DB_URL}
+      SUPABASE_DB_USERNAME: ${SUPABASE_DB_USERNAME}
+      SUPABASE_DB_PASSWORD: ${SUPABASE_DB_PASSWORD}
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:5173}
+      GOOGLE_APPLICATION_CREDENTIALS: /app/firebase-service-account.json
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./deploy/firebase-service-account.json:/app/firebase-service-account.json:ro
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: turfhub-frontend
+    ports:
+      - '5173:80'
+    depends_on:
+      - backend

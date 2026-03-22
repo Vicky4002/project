@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: turfhub-backend
+    runtime: docker
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    envVars:
+      - key: SUPABASE_DB_URL
+        sync: false
+      - key: SUPABASE_DB_USERNAME
+        sync: false
+      - key: SUPABASE_DB_PASSWORD
+        sync: false
+      - key: FRONTEND_ORIGIN
+        sync: false
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        value: /etc/secrets/firebase-service-account.json
+    healthCheckPath: /api/health

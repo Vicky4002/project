@@ -55,3 +55,27 @@ Environment variables:
 - Public endpoints: health check, turf listing/details, nearby event search.
 - Manager/Admin endpoints: turf creation, updates, and delete.
 - CORS restricted to configured frontend origin via `FRONTEND_ORIGIN`.
+
+## Deployment
+
+### Option A: Docker Compose (recommended for quick deploy)
+1. Copy env template:
+   ```bash
+   cp .env.example .env
+   ```
+2. Fill all required variables in `.env`.
+3. Add Firebase Admin service-account file to `deploy/firebase-service-account.json`.
+4. Start services:
+   ```bash
+   docker compose up --build -d
+   ```
+5. Access:
+   - Frontend: `http://localhost:5173`
+   - Backend: `http://localhost:8080/api/health`
+
+### Option B: Cloud deploy
+- **Backend on Render**: use `render.yaml` and set env vars + secret file for Firebase credentials.
+- **Frontend on Vercel**: import `frontend/`, use `frontend/vercel.json`, and set Vite env vars.
+
+### CI build validation
+A basic GitHub Actions workflow is included at `.github/workflows/deploy-preview.yml` to build backend and frontend container images on push or manual trigger.
