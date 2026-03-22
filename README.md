@@ -4,7 +4,7 @@ A full-stack starter platform for discovering sports turfs, managing turf listin
 
 ## Tech Stack
 - **Frontend**: React + Vite
-- **Backend**: Spring Boot 3
+- **Backend**: Spring Boot 3 REST API
 - **Database**: Supabase (PostgreSQL)
 - **Authentication**: Firebase Auth (JWT)
 
@@ -30,7 +30,7 @@ Run SQL scripts in Supabase SQL editor:
 ### 2) Backend
 ```bash
 cd backend
-./mvnw spring-boot:run
+mvn spring-boot:run
 ```
 
 Environment variables:
@@ -52,6 +52,6 @@ Environment variables:
 
 ## Security Notes
 - Backend validates Firebase ID tokens from `Authorization: Bearer <token>`.
-- Public endpoints: turf listing and public turf details.
+- Public endpoints: health check, turf listing/details, nearby event search.
 - Manager/Admin endpoints: turf creation, updates, and delete.
-- CORS restricted to configured frontend origin.
+- CORS restricted to configured frontend origin via `FRONTEND_ORIGIN`.
