@@ -89,5 +89,13 @@ Use `.github/workflows/deploy-vercel.yml` with repo secrets:
 
 The workflow executes `deploy/vercel-deploy.sh` to run `vercel pull`, `vercel build`, and `vercel deploy --prod` for the frontend.
 
+#### Vercel build troubleshooting
+If Vercel shows `react-scripts: command not found`, the project is using the wrong framework/build preset.
+This repo is Vite-based, so ensure build uses:
+- `npm run build` (inside `frontend/`) or root `vercel.json`
+- output directory `frontend/dist`
+
+A root-level `vercel.json` is included to force the correct Vite build command in monorepo deployments.
+
 ### CI build validation
 A basic GitHub Actions workflow is included at `.github/workflows/deploy-preview.yml` to build backend and frontend container images on push or manual trigger.
