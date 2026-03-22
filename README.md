@@ -75,7 +75,19 @@ Environment variables:
 
 ### Option B: Cloud deploy
 - **Backend on Render**: use `render.yaml` and set env vars + secret file for Firebase credentials.
-- **Frontend on Vercel**: import `frontend/`, use `frontend/vercel.json`, and set Vite env vars.
+- **Frontend on Vercel**:
+  1. Import the `frontend/` directory as a Vercel project.
+  2. Keep framework as **Vite** and config from `frontend/vercel.json`.
+  3. Add env vars in Vercel project settings (`VITE_API_BASE_URL`, Firebase client vars).
+  4. Set production domain and redeploy.
+
+### GitHub Actions deployment to Vercel
+Use `.github/workflows/deploy-vercel.yml` with repo secrets:
+- `VERCEL_TOKEN`
+- `VERCEL_ORG_ID`
+- `VERCEL_PROJECT_ID`
+
+The workflow executes `deploy/vercel-deploy.sh` to run `vercel pull`, `vercel build`, and `vercel deploy --prod` for the frontend.
 
 ### CI build validation
 A basic GitHub Actions workflow is included at `.github/workflows/deploy-preview.yml` to build backend and frontend container images on push or manual trigger.
