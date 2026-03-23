@@ -2,6 +2,8 @@
 set -euo pipefail
 
 TARGET="${1:-both}"
+URL_FILE="deploy/latest-urls.env"
+: > "$URL_FILE"
 
 run_frontend() {
   echo "[deploy] frontend -> vercel"
@@ -16,9 +18,13 @@ run_backend() {
     exit 1
   fi
 
-  curl -fsS -X POST "$RENDER_DEPLOY_HOOK_URL" >/tmp/render-deploy-response.json
+  RESPONSE=$(curl -fsS -X POST "$RENDER_DEPLOY_HOOK_URL")
   echo "Render deploy triggered"
-  cat /tmp/render-deploy-response.json || true
+  echo "$RESPONSE"
+
+  # Render deploy hooks typically return JSON with details.
+  # Save a dashboard hint for quick navigation.
+  printf 'BACKEND_STATUS=Triggered via Render deploy hook\n' >> "$URL_FILE"
 }
 
 case "$TARGET" in
@@ -37,3 +43,6 @@ case "$TARGET" in
     exit 1
     ;;
 esac
+
+echo "Deployment output file: $URL_FILE"
+cat "$URL_FILE"

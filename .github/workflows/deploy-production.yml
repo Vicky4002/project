@@ -36,3 +36,21 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: ./deploy/deploy-all.sh ${{ inputs.target }}
+
+      - name: Publish deployment links
+        if: always()
+        run: |
+          if [ -f deploy/latest-urls.env ]; then
+            set -a
+            . deploy/latest-urls.env
+            set +a
+            echo "## Deployment Links" >> "$GITHUB_STEP_SUMMARY"
+            if [ -n "${FRONTEND_URL:-}" ]; then
+              echo "- Frontend: ${FRONTEND_URL}" >> "$GITHUB_STEP_SUMMARY"
+            fi
+            if [ -n "${BACKEND_STATUS:-}" ]; then
+              echo "- Backend: ${BACKEND_STATUS}" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          else
+            echo "No deployment output file found" >> "$GITHUB_STEP_SUMMARY"
+          fi

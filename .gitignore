@@ -8,3 +8,5 @@ backend/target/
 .vscode/
 
 deploy/firebase-service-account.json
+
+deploy/latest-urls.env

@@ -111,5 +111,11 @@ Required env vars:
 
 A production workflow is also available at `.github/workflows/deploy-production.yml` (manual dispatch with target selection).
 
+
+### Where is the live link?
+After deployment:
+- Running `./deploy/deploy-all.sh frontend` prints `Frontend deployed: <url>` in terminal.
+- Running GitHub workflow `.github/workflows/deploy-production.yml` writes the URL to **Actions → workflow run → Summary → Deployment Links**.
+
 ### CI build validation
 A basic GitHub Actions workflow is included at `.github/workflows/deploy-preview.yml` to build backend and frontend container images on push or manual trigger.
