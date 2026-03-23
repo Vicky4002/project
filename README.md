@@ -34,10 +34,24 @@ mvn spring-boot:run
 ```
 
 Environment variables:
-- `SUPABASE_DB_URL`
-- `SUPABASE_DB_USERNAME`
-- `SUPABASE_DB_PASSWORD`
+- `DATABASE_URL` (Supabase pooled connection for app runtime)
+- `DIRECT_URL` (optional direct DB connection for migrations/admin tasks)
+- `SUPABASE_DB_USERNAME` / `SUPABASE_DB_PASSWORD` (optional when credentials are not embedded in URL)
 - `FIREBASE_PROJECT_ID`
+
+
+### Supabase connection formats
+Use **pooled connection** (PgBouncer, `:6543`) for app runtime:
+```env
+DATABASE_URL=postgresql://postgres.<project-ref>:[YOUR-PASSWORD]@aws-1-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true&sslmode=require
+```
+
+Use **direct connection** (`:5432`) for migrations/admin operations:
+```env
+DIRECT_URL=postgresql://postgres.<project-ref>:[YOUR-PASSWORD]@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres?sslmode=require
+```
+
+> Security note: never commit real Supabase passwords or connection URLs with credentials to git. Rotate credentials immediately if exposed.
 
 ### 3) Frontend
 ```bash

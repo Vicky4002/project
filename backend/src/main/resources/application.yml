@@ -1,8 +1,15 @@
 spring:
   datasource:
-    url: ${SUPABASE_DB_URL:jdbc:postgresql://localhost:5432/turfhub}
+    # Prefer single URL for Supabase pooling (PgBouncer), fallback to local dev URL.
+    url: ${DATABASE_URL:${SUPABASE_DB_URL:jdbc:postgresql://localhost:5432/turfhub}}
     username: ${SUPABASE_DB_USERNAME:postgres}
     password: ${SUPABASE_DB_PASSWORD:postgres}
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:10}
+      minimum-idle: ${DB_MIN_IDLE:2}
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
   jpa:
     hibernate:
       ddl-auto: update
@@ -16,3 +23,5 @@ server:
 
 app:
   frontend-origin: ${FRONTEND_ORIGIN:http://localhost:5173}
+  # Optional direct connection URL for migrations/jobs when not using PgBouncer.
+  direct-url: ${DIRECT_URL:}
