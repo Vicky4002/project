@@ -1,0 +1,38 @@
+name: Deploy Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "What to deploy"
+        required: true
+        default: both
+        type: choice
+        options:
+          - both
+          - frontend
+          - backend
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        if: ${{ inputs.target == 'both' || inputs.target == 'frontend' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Vercel CLI
+        if: ${{ inputs.target == 'both' || inputs.target == 'frontend' }}
+        run: npm install -g vercel@latest
+
+      - name: Deploy selected targets
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: ./deploy/deploy-all.sh ${{ inputs.target }}

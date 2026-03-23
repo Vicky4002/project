@@ -97,5 +97,19 @@ This repo is Vite-based, so ensure build uses:
 
 A root-level `vercel.json` is included to force the correct Vite build command in monorepo deployments.
 
+### One-command deployment
+You can deploy targets via script:
+```bash
+./deploy/deploy-all.sh frontend   # Vercel only
+./deploy/deploy-all.sh backend    # Render only
+./deploy/deploy-all.sh both       # Vercel + Render
+```
+
+Required env vars:
+- Frontend (Vercel): `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`
+- Backend (Render): `RENDER_DEPLOY_HOOK_URL`
+
+A production workflow is also available at `.github/workflows/deploy-production.yml` (manual dispatch with target selection).
+
 ### CI build validation
 A basic GitHub Actions workflow is included at `.github/workflows/deploy-preview.yml` to build backend and frontend container images on push or manual trigger.
